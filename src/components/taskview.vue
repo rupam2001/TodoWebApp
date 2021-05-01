@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="wrapper" data-aos="zoom-in">
     <span ref="msgRef" class="error"></span>
     <input
       placeholder="Title"

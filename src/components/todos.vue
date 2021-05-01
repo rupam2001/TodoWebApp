@@ -1,7 +1,10 @@
 <template>
-  <div>
+  <div class="main">
     <div>
       <div class="navbar">
+        <span class="task-left"
+          >Task left: <strong>{{ taskLeft }}</strong>
+        </span>
         <i
           class="fa fa-plus"
           aria-hidden="true"
@@ -15,13 +18,15 @@
           v-on:cancel="showCreate = !showCreate"
         />
       </div>
-      <div v-for="todo in todoData" :key="todo._id" class="alltodos">
-        <Todo
-          v-bind:todo="todo"
-          v-on:remove="removeFromLocalStorage"
-          v-on:open-task="openTask"
-          v-on:done-task="doneTask"
-        />
+      <div v-if="!showCreate">
+        <div v-for="todo in todoData" :key="todo._id" class="alltodos">
+          <Todo
+            v-bind:todo="todo"
+            v-on:remove="removeFromLocalStorage"
+            v-on:open-task="openTask"
+            v-on:done-task="doneTask"
+          />
+        </div>
       </div>
       <div v-if="todoData.length == 0 && !showCreate" class="empty">
         <span>No tasks</span>
@@ -50,6 +55,7 @@ export default {
       todoData: [],
       showCreate: false,
       currentTask: {},
+      taskLeft: 0,
     };
   },
   methods: {
@@ -67,6 +73,7 @@ export default {
         return td;
       });
       localStorage.setItem(dbTodo, JSON.stringify(this.todoData));
+      this.taskLeft = this.todoData.filter((t) => !t.isCompleted).length;
     },
     loadDataFromLocalStorage() {
       this.todoData = sampleTodo;
@@ -76,6 +83,8 @@ export default {
       }
       todos = JSON.parse(todos);
       this.todoData = todos;
+
+      this.taskLeft = todos.filter((t) => !t.isCompleted).length;
     },
     removeFromLocalStorage(id) {
       this.todoData = this.todoData.filter((t) => t._id !== id);
@@ -83,15 +92,17 @@ export default {
       currentData = JSON.parse(currentData);
       let finalData = currentData.filter((t) => t._id !== id);
       localStorage.setItem(dbTodo, JSON.stringify(finalData));
+      this.taskLeft = this.todoData.filter((t) => !t.isCompleted).length;
     },
     addNewTaskToLocalStorage(task) {
       let currentData = localStorage.getItem(dbTodo);
       currentData = JSON.parse(currentData);
       if (!currentData) currentData = [];
-      let newData = [task, ...currentData];
+      let newData = [...currentData, task];
       localStorage.setItem(dbTodo, JSON.stringify(newData));
       this.showCreate = false;
       this.todoData.push(task);
+      this.taskLeft = this.todoData.filter((t) => !t.isCompleted).length;
     },
   },
 };
@@ -99,11 +110,14 @@ export default {
 const sampleTodo = [];
 </script>
 <style scoped>
+.main {
+  padding-bottom: 5rem;
+}
 .alltodos {
   width: 100%;
   justify-content: center;
   align-items: center;
-  background-color: aliceblue;
+  border-radius: 1rem;
 }
 .navbar {
   display: flex;
@@ -111,6 +125,11 @@ const sampleTodo = [];
   padding: 0rem;
   margin-top: 0.8rem;
   margin-bottom: 1rem;
+}
+.task-left {
+  flex: 1;
+  align-self: center;
+  color: rgb(163, 25, 16);
 }
 .fa-plus {
   background-color: rgba(178, 243, 183, 0.527);

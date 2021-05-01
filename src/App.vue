@@ -6,9 +6,14 @@
 
 <script>
 import Todos from "./components/todos";
+import AOS from "aos";
+import "aos/dist/aos.css";
 export default {
   name: "App",
   components: { Todos },
+  created() {
+    AOS.init();
+  },
   beforeMount() {},
   data() {},
   methods: {},

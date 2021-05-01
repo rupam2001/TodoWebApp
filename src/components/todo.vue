@@ -23,10 +23,12 @@
       ></i>
     </div>
     <div v-if="showModel" class="model">
-      <h4>Are you sure?</h4>
-      <div class="btns">
-        <div v-on:click="onRemove('sure')" id="sure">Yes</div>
-        <div v-on:click="onRemove('no')" id="no">No</div>
+      <div class="model-menu">
+        <h4>Are you sure?</h4>
+        <div class="btns">
+          <div v-on:click="onRemove('sure')" id="sure">Yes</div>
+          <div v-on:click="onRemove('no')" id="no">No</div>
+        </div>
       </div>
     </div>
   </div>
@@ -62,7 +64,21 @@ export default {
   background-color: rgb(244, 245, 245);
   max-width: 50rem;
   margin-bottom: 1rem;
-  border-radius: 2rem;
+  border-radius: 1rem;
+  overflow: visible;
+  animation-name: anim;
+  transition: all 0.4s;
+  animation-duration: 0.4s;
+  border: 0.3px solid rgb(206, 206, 206);
+}
+@keyframes anim {
+  from {
+    transform: scale(0.5);
+  }
+
+  to {
+    transform: scale(1);
+  }
 }
 .title {
   display: flex;
@@ -70,7 +86,7 @@ export default {
   margin-bottom: 1rem;
 }
 .title-text {
-  color: rgb(80, 80, 80);
+  color: rgb(19, 100, 100);
   flex: 1;
 }
 .task-body {
@@ -85,27 +101,11 @@ export default {
   justify-content: flex-end;
 }
 .toolbar i {
-  margin-left: 2rem;
-  font-size: 1.3rem;
+  margin-left: 1.5rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.4s;
-
   /* color: rgba(22, 31, 31, 0.884); */
-}
-.toolbar i:hover {
-  animation: press;
-}
-
-@keyframes press {
-  0% {
-    transform: scale(0.98);
-  }
-  50% {
-    transform: scale(1.2);
-  }
-  100% {
-    transform: scale(1);
-  }
 }
 
 .fa-check {
@@ -123,10 +123,10 @@ export default {
 
 .model {
   position: absolute;
-  z-index: 9999;
-  background-color: rgba(248, 248, 248, 0.541);
+  z-index: 99999999;
+  background-color: rgba(24, 24, 24, 0.562);
   width: 100%;
-  height: 100%;
+  height: 100vh;
   top: 0;
   left: 0;
   display: flex;
@@ -134,7 +134,16 @@ export default {
   justify-content: center;
   flex-direction: column;
 }
-.model .btns {
+.model-menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background-color: #fff;
+  border-radius: 1rem;
+  width: 70%;
+}
+.model-menu .btns {
   padding: 1rem;
   /* background-color: #fff; */
   display: flex;
@@ -144,15 +153,16 @@ export default {
 }
 .btns div:nth-child(1) {
   background-color: rgb(224, 47, 47);
-  padding: 1rem;
+  padding: 0.5rem;
   min-width: 2rem;
   border-radius: 1rem;
+  margin-right: 2rem;
 }
 .btns div:nth-child(2) {
   background-color: #41b883;
   min-width: 2rem;
   text-align: center;
-  padding: 1rem;
+  padding: 0.5rem;
   border-radius: 1rem;
 }
 .time {
